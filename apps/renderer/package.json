@@ -1,0 +1,33 @@
+{
+  "name": "@motionforge/renderer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "remotion compositions src/index.ts --log=error",
+    "remotion:compositions": "remotion compositions src/index.ts",
+    "worker": "node --experimental-strip-types src/worker.ts",
+    "render": "node --experimental-strip-types src/render-cli.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@motionforge/ai-engine": "*",
+    "@motionforge/asset-manager": "*",
+    "@motionforge/database": "*",
+    "@motionforge/shared": "*",
+    "@motionforge/video-components": "*",
+    "@motionforge/video-schema": "*",
+    "@remotion/bundler": "4.0.541",
+    "@remotion/cli": "4.0.541",
+    "@remotion/renderer": "4.0.541",
+    "remotion": "4.0.541",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.1",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "typescript": "5.9.3"
+  }
+}

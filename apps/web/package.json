@@ -1,0 +1,38 @@
+{
+  "name": "@motionforge/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "next lint",
+    "test": "node --test --experimental-strip-types test/*.test.ts"
+  },
+  "dependencies": {
+    "@motionforge/ai-engine": "*",
+    "@motionforge/asset-manager": "*",
+    "@motionforge/database": "*",
+    "@motionforge/shared": "*",
+    "@motionforge/video-components": "*",
+    "@motionforge/video-schema": "*",
+    "@remotion/player": "4.0.541",
+    "clsx": "2.1.1",
+    "lucide-react": "0.544.0",
+    "next": "15.5.29",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tailwind-merge": "3.3.1",
+    "zod": "4.6.7",
+    "zustand": "5.0.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.14",
+    "@types/node": "22.18.1",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "tailwindcss": "4.1.14",
+    "typescript": "5.9.3"
+  }
+}

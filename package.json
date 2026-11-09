@@ -1,0 +1,25 @@
+{
+  "name": "motionforge",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @motionforge/web",
+    "build": "npm run build --workspace @motionforge/video-schema && npm run build --workspace @motionforge/shared && npm run build --workspace @motionforge/video-components && npm run build --workspace @motionforge/ai-engine && npm run build --workspace @motionforge/renderer && npm run build --workspace @motionforge/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:push": "npm run db:push --workspace @motionforge/database",
+    "db:generate": "npm run db:generate --workspace @motionforge/database",
+    "worker": "npm run worker --workspace @motionforge/renderer"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3"
+  }
+}

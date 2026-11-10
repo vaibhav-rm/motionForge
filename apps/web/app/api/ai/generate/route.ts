@@ -5,6 +5,7 @@ import { addMessage, getProject, saveVersion } from "@motionforge/database";
 import { requireUser } from "@/lib/auth";
 import { handleApiError, jsonError, jsonOk, readJson } from "@/lib/api";
 import { saveProject } from "@/lib/projects";
+import { loadSettings, resolveAIConfig } from "@/lib/settings";
 
 const schema = z.object({
   projectId: z.string().min(1),
@@ -36,18 +37,25 @@ export async function POST(request: NextRequest) {
     await addMessage(projectId, "user", prompt, { kind: "generate" }).catch(() => {});
 
     const dims = aspectRatio ? ASPECT[aspectRatio] : null;
-    const result = await generateProject({
-      prompt,
-      targetDurationSeconds: targetDurationSeconds ?? null,
-      targetWidth: dims?.width ?? existing.width,
-      targetHeight: dims?.height ?? existing.height,
-      targetFps: existing.fps,
-      availableAssets: (existing.assets ?? []).map((a) => ({
-        id: a.id,
-        name: a.name,
-        type: a.type,
-      })),
-    });
+    const settings = await loadSettings();
+    const result = await generateProject(
+      {
+        prompt,
+        targetDurationSeconds: targetDurationSeconds ?? null,
+        targetWidth: dims?.width ?? existing.width,
+        targetHeight: dims?.height ?? existing.height,
+        targetFps: existing.fps,
+        availableAssets: (existing.assets ?? []).map((a) => ({
+          id: a.id,
+          name: a.name,
+          type: a.type,
+        })),
+      },
+      {
+        provider: resolveAIConfig(settings),
+        temperature: settings.ai.temperature,
+      },
+    );
 
     // Preserve project identity and carry over assets.
     const project = {

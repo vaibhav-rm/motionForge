@@ -11,6 +11,7 @@ import {
   saveVersion,
 } from "@motionforge/database";
 import { createProject, createScene, type Scene } from "@motionforge/video-schema";
+import { loadSettings } from "./settings";
 
 export { dbListProjects as listProjects };
 export { dbGetProject as getProject };
@@ -30,12 +31,14 @@ export async function createBlankProject(
     description: "A blank opening scene. Describe your idea to generate content.",
   });
 
+  const { defaults } = await loadSettings();
+
   const project = createProject({
     name: input.name?.trim() || "Untitled Project",
     description: input.description?.trim() || "",
-    fps: 30,
-    width: 1920,
-    height: 1080,
+    fps: defaults.fps,
+    width: defaults.width,
+    height: defaults.height,
     scenes: [opening],
   });
 

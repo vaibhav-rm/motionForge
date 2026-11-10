@@ -5,6 +5,7 @@ import { addMessage, getProject, saveVersion } from "@motionforge/database";
 import { requireUser } from "@/lib/auth";
 import { handleApiError, jsonError, jsonOk, readJson } from "@/lib/api";
 import { saveProject } from "@/lib/projects";
+import { loadSettings, resolveAIConfig } from "@/lib/settings";
 
 const schema = z.object({
   projectId: z.string().min(1),
@@ -29,12 +30,19 @@ export async function POST(request: NextRequest) {
       focusedSceneId,
     }).catch(() => {});
 
-    const result = await editProject({
-      instruction,
-      project: existing,
-      focusedSceneId: focusedSceneId ?? null,
-      selectedElementIds: selectedElementIds ?? [],
-    });
+    const settings = await loadSettings();
+    const result = await editProject(
+      {
+        instruction,
+        project: existing,
+        focusedSceneId: focusedSceneId ?? null,
+        selectedElementIds: selectedElementIds ?? [],
+      },
+      {
+        provider: resolveAIConfig(settings),
+        temperature: settings.ai.temperature,
+      },
+    );
 
     // Preserve identity/metadata.
     const project = {

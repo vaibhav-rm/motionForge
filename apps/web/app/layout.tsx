@@ -1,9 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MotionForge",
-  description: "AI-powered video creation studio built on Remotion.",
+  title: {
+    default: "MotionForge — AI Video Studio",
+    template: "%s · MotionForge",
+  },
+  description:
+    "Describe it. Visualize it. Refine it. Render it. MotionForge turns natural language into editable, high-quality videos built with Remotion.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ece7db",
+  colorScheme: "light",
 };
 
 export default function RootLayout({

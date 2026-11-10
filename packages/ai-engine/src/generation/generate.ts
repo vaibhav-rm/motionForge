@@ -16,7 +16,7 @@ import { resolveStyle } from "../prompts/styles.js";
 import { planVideo } from "../prompts/planner.js";
 import { compilePlan } from "./compiler.js";
 import { applyEditPlan } from "./editing.js";
-import { getProvider } from "../providers/registry.js";
+import { getProvider, type AIEngineConfig } from "../providers/registry.js";
 import { buildPlanPrompt, buildEditPrompt } from "../prompts/system.js";
 import { parseJsonResponse } from "./json.js";
 
@@ -29,6 +29,19 @@ import { parseJsonResponse } from "./json.js";
 
 /** Default runtime when the prompt does not state one. */
 const DEFAULT_DURATION_SECONDS = 30;
+
+/**
+ * Runtime options supplied by the caller.
+ *
+ * The provider configuration is passed in rather than read from the
+ * environment so the application can let the user configure credentials at
+ * runtime. When omitted the environment is used, preserving the previous
+ * behaviour.
+ */
+export interface GenerationOptions {
+  provider?: AIEngineConfig;
+  temperature?: number;
+}
 
 /**
  * Resolve the target duration for a request.
@@ -48,9 +61,10 @@ export function resolveTargetDuration(
  */
 export async function generateProject(
   rawRequest: unknown,
+  options: GenerationOptions = {},
 ): Promise<GenerationResult> {
   const request = GenerationRequestSchema.parse(rawRequest);
-  const provider = getProvider();
+  const provider = getProvider(options.provider);
 
   const analysis = analysePrompt(request.prompt);
   const targetDuration = resolveTargetDuration(request);
@@ -87,7 +101,7 @@ export async function generateProject(
         },
       ],
       model: "",
-      temperature: 0.7,
+      temperature: options.temperature ?? 0.7,
       maxTokens: 8000,
       jsonMode: true,
     });
@@ -133,9 +147,12 @@ export async function generateProject(
  * deterministic code, so an edit scoped to one scene provably cannot touch
  * another scene.
  */
-export async function editProject(rawRequest: unknown): Promise<GenerationResult> {
+export async function editProject(
+  rawRequest: unknown,
+  options: GenerationOptions = {},
+): Promise<GenerationResult> {
   const request = EditRequestSchema.parse(rawRequest);
-  const provider = getProvider();
+  const provider = getProvider(options.provider);
 
   let editPlan: EditPlanInput;
 
@@ -156,7 +173,7 @@ export async function editProject(rawRequest: unknown): Promise<GenerationResult
         },
       ],
       model: "",
-      temperature: 0.4,
+      temperature: Math.min(options.temperature ?? 0.4, 0.8),
       maxTokens: 4000,
       jsonMode: true,
     });

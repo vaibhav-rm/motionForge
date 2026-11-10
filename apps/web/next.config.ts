@@ -29,10 +29,6 @@ const nextConfig: NextConfig = {
     config.resolve = config.resolve ?? {};
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
-      react: path.join(root, "node_modules/react"),
-      "react-dom": path.join(root, "node_modules/react-dom"),
-      "react/jsx-runtime": path.join(root, "node_modules/react/jsx-runtime"),
-      "react/jsx-dev-runtime": path.join(root, "node_modules/react/jsx-dev-runtime"),
       remotion: path.join(root, "node_modules/remotion"),
     };
     return config;

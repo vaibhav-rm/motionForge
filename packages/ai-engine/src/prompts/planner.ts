@@ -476,15 +476,15 @@ function planBackground(
   }
   switch (visual) {
     case "network":
-    case "chart":
     case "code":
-      return "grid";
+      return "mesh";
     case "particles":
     case "abstractShapes":
       return "mesh";
+    case "chart":
     case "diagram":
     case "process":
-      return "dots";
+      return "linearGradient";
     default:
       return "linearGradient";
   }

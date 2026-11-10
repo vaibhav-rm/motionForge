@@ -518,7 +518,7 @@ export const NetworkRenderer: React.FC<NetworkRendererProps> = ({
               stroke={element.edgeColor}
               strokeWidth={element.edgeWidth}
               opacity={edgeReveal * 0.85}
-              strokeDasharray={element.pulse ? "6 8" : undefined}
+              strokeDasharray={undefined}
             />
           );
         })}

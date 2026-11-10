@@ -80,8 +80,11 @@ export const BackgroundRenderer: React.FC<BackgroundProps> = ({
       return <MeshBackground background={background} palette={palette} frame={frame} />;
 
     case "grid":
+      // Legacy projects may still carry a `grid` background. Render it as a
+      // soft colour field: literal 1px grid lines read as rendering artifacts
+      // once the video is encoded, so they are intentionally gone.
       return (
-        <GridBackground background={background} palette={palette} frame={frame} />
+        <GridBackground background={background} palette={palette} />
       );
 
     case "dots":
@@ -145,27 +148,23 @@ const MeshBackground: React.FC<{
   );
 };
 
-/** Perspective grid receding toward a horizon — reads as "technical". */
+/**
+ * Legacy `grid` background.
+ *
+ * Older projects were planned with a scrolling 1px grid. That pattern moirés
+ * and shows visible line artifacts after H.264 encoding, so the type now
+ * resolves to a smooth two-stop colour field with no line work at all.
+ */
 const GridBackground: React.FC<{
   background: Background;
   palette: BackgroundProps["palette"];
-  frame: number;
-}> = ({ background, palette, frame }) => {
-  const offset = background.animated ? (frame * 0.35) % background.gridSize : 0;
-  const size = background.gridSize;
-
+}> = ({ background, palette }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: background.color, opacity: background.opacity }}>
       <AbsoluteFill
         style={{
-          backgroundImage: `linear-gradient(${palette.muted ?? "rgba(148,163,184,0.16)"} 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(148,163,184,0.16) 1px, transparent 1px)`,
-          backgroundSize: `${size}px ${size}px`,
-          backgroundPosition: `${offset}px ${offset}px`,
-          maskImage:
-            "radial-gradient(ellipse at 50% 45%, black 20%, rgba(0,0,0,0.35) 65%, transparent 92%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse at 50% 45%, black 20%, rgba(0,0,0,0.35) 65%, transparent 92%)",
+          background: `radial-gradient(circle at 30% 30%, ${palette.primary}26 0%, transparent 58%),
+                       radial-gradient(circle at 78% 72%, ${palette.secondary}1f 0%, transparent 60%)`,
         }}
       />
     </AbsoluteFill>

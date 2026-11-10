@@ -1,20 +1,90 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ */
+/* MotionForge — "Paper & Ink" design system                           */
+/*                                                                     */
+/* The workspace is a printed page: warm stock, black ink, one signal  */
+/* colour. The editor is the dark cutting room. No gradients, no glass.*/
+/* ------------------------------------------------------------------ */
+
 :root {
-  --bg: #09090b;
-  --bg-elevated: #111114;
-  --bg-panel: #141419;
-  --bg-hover: #1c1c22;
-  --border: #24242b;
-  --border-subtle: #1a1a20;
-  --text: #f4f4f5;
-  --text-muted: #8b8b95;
-  --text-dim: #5a5a64;
-  --accent: #6ee7c8;
-  --accent-strong: #34d399;
-  --accent-dim: rgba(110, 231, 200, 0.12);
-  --danger: #f87171;
-  --warn: #fbbf24;
+  color-scheme: light;
+
+  --bg: #ece7db;
+  --bg-elevated: #f5f1e7;
+  --bg-panel: #f5f1e7;
+  --bg-sunken: #e5dfd1;
+  --bg-hover: #e8e2d4;
+  --bg-active: #ded7c7;
+
+  --paper: #f5f1e7;
+  --ink: #17150f;
+
+  --border: rgba(23, 21, 15, 0.22);
+  --border-subtle: rgba(23, 21, 15, 0.11);
+  --border-strong: rgba(23, 21, 15, 0.55);
+
+  --text: #17150f;
+  --text-muted: #57513f;
+  --text-dim: #857e6b;
+
+  --accent: #e0451f;
+  --accent-strong: #c23514;
+  --accent-2: #17150f;
+  --accent-3: #e0451f;
+  --accent-dim: rgba(224, 69, 31, 0.09);
+  --accent-soft: rgba(224, 69, 31, 0.28);
+  --accent-contrast: #fbf6ea;
+
+  --ring: rgba(224, 69, 31, 0.55);
+  --success: #2f6b45;
+  --danger: #b3261e;
+  --warn: #a16207;
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Palladio,
+    "Book Antiqua", Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+
+  --shadow-panel: none;
+  --shadow-glow: none;
+  --shadow-offset: 4px 4px 0 var(--ink);
+}
+
+/* Dark cutting-room scope. Same language, inverted stock. */
+.mf-bay {
+  color-scheme: dark;
+
+  --bg: #12100c;
+  --bg-elevated: #191611;
+  --bg-panel: #191611;
+  --bg-sunken: #0d0b08;
+  --bg-hover: #221e17;
+  --bg-active: #2a251c;
+
+  --paper: #17150f;
+  --ink: #f0e9d8;
+
+  --border: rgba(240, 233, 216, 0.16);
+  --border-subtle: rgba(240, 233, 216, 0.08);
+  --border-strong: rgba(240, 233, 216, 0.4);
+
+  --text: #f0e9d8;
+  --text-muted: #a9a08a;
+  --text-dim: #776f5d;
+
+  --accent: #f0522a;
+  --accent-strong: #ff6b43;
+  --accent-dim: rgba(240, 82, 42, 0.12);
+  --accent-soft: rgba(240, 82, 42, 0.32);
+  --accent-contrast: #17150f;
+
+  --success: #7fbf94;
+  --danger: #ff8a7a;
+  --warn: #e3b341;
+
+  --shadow-offset: 4px 4px 0 #000;
 }
 
 * {
@@ -25,35 +95,38 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
-  font-family: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+body {
+  min-height: 100vh;
+}
+
 ::selection {
-  background: rgba(110, 231, 200, 0.25);
+  background: var(--accent);
+  color: var(--accent-contrast);
 }
 
 ::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a33;
-  border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
+  background: var(--border);
+  border: 3px solid transparent;
+  background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #353540;
-  border: 2px solid transparent;
-  background-clip: padding-box;
+  background: var(--border-strong);
+  border: 3px solid transparent;
+  background-clip: content-box;
 }
 
 button {
@@ -61,7 +134,7 @@ button {
 }
 button:disabled {
   cursor: default;
-  opacity: 0.55;
+  opacity: 0.45;
 }
 
 input,
@@ -71,27 +144,249 @@ select {
   color: inherit;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+/* ------------------------------------------------------------------ */
+/* Type helpers                                                        */
+/* ------------------------------------------------------------------ */
+
+.mf-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.mf-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.mf-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.mf-text-gradient {
+  color: var(--accent);
+  background: none;
+}
+
+.mf-accent-gradient {
+  background-image: none;
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* ------------------------------------------------------------------ */
+/* Surfaces                                                            */
+/* ------------------------------------------------------------------ */
+
 .mf-panel {
   background: var(--bg-panel);
   border: 1px solid var(--border);
+  border-radius: 2px;
 }
+
+.mf-card {
+  position: relative;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+.mf-card:hover {
+  transform: translate(-3px, -3px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-offset);
+}
+
+.mf-glass {
+  background: var(--bg-elevated);
+}
+
+.mf-inset {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+}
+
+.mf-glow {
+  box-shadow: var(--shadow-offset);
+}
+
+.mf-hairline {
+  background: var(--ink);
+  background-image: none;
+}
+
+.mf-dot-grid {
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.mf-grid-lines {
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.mf-stage-glow {
+  background:
+    radial-gradient(70% 70% at 50% 42%, rgba(240, 82, 42, 0.05), transparent 72%),
+    var(--bg-sunken);
+}
+
+/* ------------------------------------------------------------------ */
+/* Focus & controls                                                    */
+/* ------------------------------------------------------------------ */
 
 .mf-focus:focus-visible {
-  outline: 2px solid rgba(110, 231, 200, 0.35);
-  outline-offset: 1px;
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
 }
 
+.mf-focus-ring:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.mf-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23857e6b' stroke-width='2.2' stroke-linecap='square'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+input[type="color"] {
+  cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.mf-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.mf-range::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--border);
+}
+.mf-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px;
+  height: 12px;
+  width: 6px;
+  border-radius: 0;
+  background: var(--accent);
+  border: none;
+}
+.mf-range::-moz-range-track {
+  height: 2px;
+  background: var(--border);
+}
+.mf-range::-moz-range-thumb {
+  height: 12px;
+  width: 6px;
+  border-radius: 0;
+  background: var(--accent);
+  border: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion                                                              */
+/* ------------------------------------------------------------------ */
+
 @keyframes mf-pulse {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 .mf-pulse {
-  animation: mf-pulse 1.4s ease-in-out infinite;
+  animation: mf-pulse 1.6s ease-in-out infinite;
 }
 
 @keyframes mf-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 .mf-spin {
   animation: mf-spin 0.9s linear infinite;
+}
+
+@keyframes mf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.mf-rise {
+  animation: mf-rise 0.32s ease-out both;
+}
+
+@keyframes mf-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+.mf-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-sunken) 0%,
+    var(--bg-hover) 50%,
+    var(--bg-sunken) 100%
+  );
+  background-size: 800px 100%;
+  animation: mf-shimmer 1.8s linear infinite;
+}
+
+.mf-drift {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mf-rise,
+  .mf-shimmer,
+  .mf-pulse {
+    animation: none;
+  }
+  .mf-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
